@@ -1,7 +1,5 @@
-
 from django.shortcuts import render
-from django.http import HttpResponse
 from requests import request
 
-def index(request):
+def main(self):
     return render(request, 'main.html')
