@@ -21,11 +21,14 @@ import sinchonsite.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('main/', include('sinchonsite.urls')),
+
+    path('', include('user.urls') ),
     
     # social login
-    path('user/login', user.views.login_view, name='login'),
-    path('user/logout', user.views.logout_view, name='logout'),
-    path('user/signup', user.views.signup_view, name='signup'),
+    path('accounts/login', user.views.login_view, name='login'),
+    path('accounts/logout', user.views.logout_view, name='logout'),
+    path('accounts/signup', user.views.signup_view, name='signup'),
     # path('user/', include('user.urls')),
-    path('user/', include('allauth.urls')),
+    path('accounts/', include('allauth.urls')),
 ]
