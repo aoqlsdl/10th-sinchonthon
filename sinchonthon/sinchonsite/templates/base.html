@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- {% block head %} {% endblock %} -->
+	</head>
+	<body>
+		<header class="haeder-bg">
+			<div class="logo">로고이미지</div>
+			{% if user.is_authenticated %}
+			<div class="login">
+				<button>로그인</button>
+			</div>
+			{% else %}
+			<div class="mypage">
+				<button>로그인</button>
+			</div>
+			{% endif %}
+		</header>
+
+		<footer>
+			<p>멋쟁이사자처럼</p>
+		</footer>
+
+		{% block content %} {% endblock %}
+	</body>
+</html>

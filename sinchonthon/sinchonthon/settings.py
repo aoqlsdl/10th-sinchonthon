@@ -60,7 +60,6 @@ INSTALLED_APPS = [
 
     # provider
     'allauth.socialaccount.providers.kakao',
-    # 'allauth.socialaccount.providers.naver',
 ]
 
 MIDDLEWARE = [
@@ -124,12 +123,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'sinchonthon', 'static')
-]
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -145,18 +138,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# SOCIAL_OUTH_CONFIG = {
-#     'KAKAO_REST_API_KEY' : secrets['KAKAO_REST_API_KEY'],
-#     'KAKAO_REDIRECT_URI' : secrets['KAKAO_REDIRECT_URI'],
-#     'KAKAO_SECRET_KEY' : secrets['KAKAO_SECRET_KEY'],
-#     }
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -165,4 +150,14 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 1
 
+# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 LOGIN_REDIRECT_URL = '/'
+
+STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+    # os.path.join(BASE_DIR,'sinchonsite','static'),
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
