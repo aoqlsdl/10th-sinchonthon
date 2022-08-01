@@ -22,16 +22,14 @@ import user.views
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('main/', include('sinchonsite.urls')),
-
     path('', include('user.urls') ),
     path('', main, name='main'),
 
     
     # social login
-    path('accounts/login', user.views.login_view, name='login'),
-    path('accounts/logout', user.views.logout_view, name='logout'),
-    path('accounts/signup', user.views.signup_view, name='signup'),
+    #path('accounts/login', user.views.login_view, name='login'),
+    #path('accounts/logout', user.views.logout_view, name='logout'),
+    #path('accounts/signup', user.views.signup_view, name='signup'),
     # path('user/', include('user.urls')),
-    path('accounts/', include('allauth.urls')),
+    #path('accounts/', include('allauth.urls')),
 ]

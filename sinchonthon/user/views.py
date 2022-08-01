@@ -1,43 +1,40 @@
-from dataclasses import dataclass
-from turtle import home
 from django.shortcuts import redirect, render
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse, JsonResponse
-from requests import RequestException
-import json
-from django.template import loader
 import requests
 
-# from sinchonthon.sinchonthon.settings import SOCIAL_OUTH_CONFIG
-from .forms import RegisterForm
-
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
 
 def index(request):
-    _context = {'check':False}
+    logincheck = {'check':False}
     if request.session.get('access_token'):
-        _context['check'] = True
-    return render(request, 'login.html', _context)
+         logincheck['check'] = True
+    return render(request, 'login.html',  logincheck)
 
+#카카오에서 인가 코드를 받아오는 과정
 def kakaoLoginLogic(request):
-    _restApiKey = '' # 입력필요
+
+    _restApiKey = '' # 입력필요, push할때 지우기 
     _redirectUrl = 'http://127.0.0.1:8000/kakaoLoginLogicRedirect'
     _url = f'https://kauth.kakao.com/oauth/authorize?client_id={_restApiKey}&redirect_uri={_redirectUrl}&response_type=code'
     return redirect(_url)
 
-
+#인가코드를 받아온 것을 바탕으로, 로그인 토큰을 받아오는 과정, 인가코드는 _qs, _url은 토큰 발급요청주소
 def kakaoLoginLogicRedirect(request):
-    _qs = request.GET['code']
-    _restApiKey = '' # 입력필요
+    _qs = request.GET['code']  
+    _restApiKey = '' # 입력필요, push할때 지우기 
     _redirect_uri = 'http://127.0.0.1:8000/kakaoLoginLogicRedirect'
-    _url = f'https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={_restApiKey}&redirect_uri={_redirect_uri}&code={_qs}'
-    _res = requests.post(_url)
-    _result = _res.json()
-    request.session['access_token'] = _result['access_token']
+    _tokenurl = f'https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={_restApiKey}&redirect_uri={_redirect_uri}&code={_qs}'
+    
+    
+    _res = requests.post(_tokenurl) #post로 토큰 요청
+    _kakaologinresult = _res.json() #json으로 토큰에 대한 응답 받음.
+    kakao_access_token = _kakaologinresult['access_token']
+    request.session['access_token'] = _kakaologinresult['access_token']
     request.session.modified = True
-    return render(request, 'loginSuccess.html')
+
+    logincheck = {'check':False}
+    if request.session.get('access_token'):
+        logincheck['check'] = True
+    
+    return render(request, 'loginSuccess.html' ,  logincheck)
 
 def kakaoLogout(request):
     _token = request.session['access_token']
@@ -56,6 +53,19 @@ def kakaoLogout(request):
         return render(request, 'loginoutSuccess.html')
     else:
         return render(request, 'logoutError.html')
+
+
+
+"""
+from django.contrib.auth import authenticate, login, logout
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from django.template import loader
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.http import HttpResponse, JsonResponse
+from requests import RequestException
+from .forms import RegisterForm
+import json
 
 # Create your views here.
 def login_view(request):
@@ -125,3 +135,4 @@ def signup_view(request):
 #             CLIENT_ID, REDIRET_URL)
 #         res = redirect(url)
 #         return res
+"""

@@ -2,9 +2,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('kakaologin', views.index, name='kakao'),
-    path('kakaoLoginLogic', views.kakaoLoginLogic),
-    path('kakaoLoginLogicRedirect/', views.kakaoLoginLogicRedirect),
-    path('kakaoLogout/',views.kakaoLogout),
-    path('kakaologinredirect', views.index, name='index'),
+    path('kakaologin', views.index, name='kakaologin'),
+    path('kakaoLoginLogic', views.kakaoLoginLogic, name='kakaologic'),
+    path('kakaoLoginLogicRedirect/', views.kakaoLoginLogicRedirect, name='kakaoredirect'),
+    path('kakaoLogout/',views.kakaoLogout, name='kakaologout'),
+    path('kakaologinredirect', views.index, name='kakaredirecting'),
 ]
