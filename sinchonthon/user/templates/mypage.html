@@ -1,0 +1,51 @@
+<!-- {% extends 'base.html' %} {% block head %} -->
+<!DOCTYPE html>
+<!-- {% load static %} -->
+<html>
+	<head>
+		<title>10th 신촌톤</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="icon" href="/favicon.ico" type="image/x-icon" /> -->
+
+		<!-- django static -->
+		<!-- <link rel="stylesheet" href="{% static '/css/main.css' %}" /> -->
+		<!-- <link rel="stylesheet" href="{% static 'css/timer.css' %}" /> -->
+
+		<!-- html으로 확인 -->
+		<link rel="stylesheet" href="../static/css/main.css" />
+		<link rel="stylesheet" href="../static/css/slider.css" />
+		<script src="../static/js/timer.js"></script>
+		<script src="../static/js/timeline.js"></script>
+		<!-- <script src="../static/js/slide.js"></script> -->
+		<!-- {% endblock %} -->
+
+		<!-- 폰트 -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@500;700&family=Song+Myung&display=swap"
+			rel="stylesheet"
+		/>
+
+		<!-- 폰트 적용 -->
+		<style type="text/css" media="screen, print">
+			@font-face {
+				font-family: 'DXMobrRExtraBold-KSCpc-EUC-H';
+				src: url('../static/font/DXMobrRExtraBold-KSCpc-EUC-H.ttf');
+			}
+
+			body {
+				font-family: 'DXMobrRExtraBold-KSCpc-EUC-H', serif;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- {% block content %} -->
+
+		<h1>마이페이지 화면임ㅋ</h1>
+        <h2>너의이름은 {{ nickname }}</h2>
+
+		<!-- {% endblock %} -->
+	</body>
+</html>

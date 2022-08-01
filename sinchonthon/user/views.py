@@ -6,12 +6,11 @@ def index(request):
     logincheck = {'check':False}
     if request.session.get('access_token'):
          logincheck['check'] = True
-    return render(request, 'login.html',  logincheck)
+    return render(request, 'base.html',  logincheck)
 
-#카카오에서 인가 코드를 받아오는 과정
+#1 카카오에서 인가 코드를 받아오는 과정
 def kakaoLoginLogic(request):
-
-    _restApiKey = '' # 입력필요, push할때 지우기 
+    _restApiKey = '1ea218335e34b42a39f45915f100f553' # 입력필요, push할때 지우기 
     _redirectUrl = 'http://127.0.0.1:8000/kakaoLoginLogicRedirect'
     _url = f'https://kauth.kakao.com/oauth/authorize?client_id={_restApiKey}&redirect_uri={_redirectUrl}&response_type=code'
     return redirect(_url)
@@ -19,14 +18,16 @@ def kakaoLoginLogic(request):
 #인가코드를 받아온 것을 바탕으로, 로그인 토큰을 받아오는 과정, 인가코드는 _qs, _url은 토큰 발급요청주소
 def kakaoLoginLogicRedirect(request):
     _qs = request.GET['code']  
-    _restApiKey = '' # 입력필요, push할때 지우기 
+    _restApiKey = '1ea218335e34b42a39f45915f100f553' # 입력필요, push할때 지우기 
     _redirect_uri = 'http://127.0.0.1:8000/kakaoLoginLogicRedirect'
     _tokenurl = f'https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={_restApiKey}&redirect_uri={_redirect_uri}&code={_qs}'
     
-    
     _res = requests.post(_tokenurl) #post로 토큰 요청
-    _kakaologinresult = _res.json() #json으로 토큰에 대한 응답 받음.
-    kakao_access_token = _kakaologinresult['access_token']
+    _kakaologinresult = _res.json() #json으로 토큰에 대한 응답 받음. (kakaologinresult)
+    kakao_access_token = _kakaologinresult['access_token'] #access token만 빼먹음
+    print("토큰입니다 : ", kakao_access_token)
+    print("리프레시 토큰 보여줘!", _kakaologinresult['refresh_token']) 
+
     request.session['access_token'] = _kakaologinresult['access_token']
     request.session.modified = True
 
@@ -34,7 +35,25 @@ def kakaoLoginLogicRedirect(request):
     if request.session.get('access_token'):
         logincheck['check'] = True
     
-    return render(request, 'loginSuccess.html' ,  logincheck)
+    return render(request, 'main.html' ,  logincheck)
+
+def myInformation(request):
+    _token = request.session['access_token']
+    print("이거 엑세스 토큰이냐?:",_token)
+    kakao_user_api = "https://kapi.kakao.com/v2/user/me?access_token="
+    kakao_user_api += str(_token)
+    user_profile_data = requests.get(kakao_user_api)
+    user_json_data = user_profile_data.json()
+    user_nickname = user_json_data['properties']['nickname']
+    print(user_nickname)
+
+
+    
+    logincheck = {'check':False}
+    if request.session.get('access_token'):
+        logincheck['check'] = True
+
+    return render(request,'mypage.html',{'nickname' : user_nickname}, logincheck )
 
 def kakaoLogout(request):
     _token = request.session['access_token']
@@ -42,15 +61,11 @@ def kakaoLogout(request):
     _header = {
       'Authorization': f'bearer {_token}'
     }
-    # _url = 'https://kapi.kakao.com/v1/user/unlink'
-    # _header = {
-    #   'Authorization': f'bearer {_token}',
-    # }
     _res = requests.post(_url, headers=_header)
     _result = _res.json()
     if _result.get('id'):
         del request.session['access_token']
-        return render(request, 'loginoutSuccess.html')
+        return render(request, 'main.html')
     else:
         return render(request, 'logoutError.html')
 
