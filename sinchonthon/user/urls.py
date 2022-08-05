@@ -6,6 +6,7 @@ urlpatterns = [
     path('kakaoLoginLogic', views.kakaoLoginLogic, name='kakaologic'),
     path('kakaoLoginLogicRedirect/', views.kakaoLoginLogicRedirect, name='kakaoredirect'),
     path('kakaoLogout/',views.kakaoLogout, name='kakaologout'),
-    path('kakaologinredirect', views.index, name='kakaredirecting'),
+    #path('kakaologinredirect', views.index, name='kakaredirecting'),
     path('myInformation',views.myInformation,name='myInformation'),
+
 ]
